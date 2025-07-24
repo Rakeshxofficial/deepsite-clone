@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  assetPrefix: process.env.NODE_ENV === 'production' ? undefined : undefined,
+  trailingSlash: false,
   webpack(config, options) {
     const { isServer } = options;
     config.module.rules.push({
