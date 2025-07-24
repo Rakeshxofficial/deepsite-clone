@@ -5,17 +5,11 @@ import { apiServer } from "@/lib/api";
 import MY_TOKEN_KEY from "@/lib/get-cookie-name";
 import { AppEditor } from "@/components/editor";
 
-// Check if user is authenticated
-async function checkAuth() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(MY_TOKEN_KEY())?.value;
-  return !!token;
-}
-
 async function getProject(namespace: string, repoId: string) {
+  // TODO replace with a server action
   const cookieStore = await cookies();
   const token = cookieStore.get(MY_TOKEN_KEY())?.value;
-  if (!token) return null;
+  if (!token) return {};
   try {
     const { data } = await apiServer.get(
       `/me/projects/${namespace}/${repoId}`,
@@ -28,7 +22,7 @@ async function getProject(namespace: string, repoId: string) {
 
     return data.project;
   } catch {
-    return null;
+    return {};
   }
 }
 
@@ -37,17 +31,10 @@ export default async function ProjectNamespacePage({
 }: {
   params: Promise<{ namespace: string; repoId: string }>;
 }) {
-  const isAuthenticated = await checkAuth();
-  
-  if (!isAuthenticated) {
-    redirect("/auth");
-  }
-
   const { namespace, repoId } = await params;
   const project = await getProject(namespace, repoId);
-  if (!project) {
-    redirect("/auth");
+  if (!project?.html) {
+    redirect("/projects");
   }
-  
   return <AppEditor project={project} />;
 }

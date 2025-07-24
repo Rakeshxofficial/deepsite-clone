@@ -25,13 +25,15 @@ export default function AppContext({
   const router = useRouter();
 
   useMount(() => {
-    // Always check authentication - redirect to auth if no user
-    if (!user && !loading) {
+    if (!initialData?.user && !user) {
       if ([401, 403].includes(errCode as number)) {
         logout();
-      } else if (!pathname.includes("/auth")) {
-        // Redirect to auth page if not authenticated and not already on auth page
-        router.push("/auth");
+      } else if (pathname.includes("/spaces")) {
+        if (errCode) {
+          toast.error("An error occured while trying to log in");
+        }
+        // If we did not manage to log in (probs because api is down), we simply redirect to the home page
+        router.push("/");
       }
     }
   });
