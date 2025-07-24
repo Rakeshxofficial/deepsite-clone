@@ -3,20 +3,25 @@ USER root
 
 USER 1000
 WORKDIR /usr/src/app
-# Copy package.json and package-lock.json to the container
+
+# Copy package files
 COPY --chown=1000 package.json package-lock.json ./
 
-# Copy the rest of the application files to the container
+# Copy the rest of the application files
 COPY --chown=1000 . .
 
+# Install dependencies
 RUN npm install
+
+# Build the application
 RUN npm run build
 
 # Copy static assets and public files to standalone build
 RUN cp -r public .next/standalone/
 RUN cp -r .next/static .next/standalone/.next/
-# Expose the application port (assuming your app runs on port 3000)
-EXPOSE 3000
 
-# Start the application
-CMD ["npm", "start"]
+# Expose the application port
+EXPOSE 10000
+
+# Start the application using the standalone server
+CMD ["node", ".next/standalone/server.js"]
