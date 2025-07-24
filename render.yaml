@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: htmlweb-dev
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: OAUTH_CLIENT_ID
+        sync: false
+      - key: OAUTH_CLIENT_SECRET
+        sync: false
+      - key: DEFAULT_HF_TOKEN
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: NEXT_APP_API_URL
+        generateValue: true
+        value: https://htmlweb-dev.onrender.com/api
