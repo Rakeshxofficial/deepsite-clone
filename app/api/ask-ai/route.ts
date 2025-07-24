@@ -69,18 +69,7 @@ export async function POST(request: NextRequest) {
     : authHeaders.get("x-forwarded-for");
 
   if (!token) {
-    ipAddresses.set(ip, (ipAddresses.get(ip) || 0) + 1);
-    if (ipAddresses.get(ip) > MAX_REQUESTS_PER_IP) {
-      return NextResponse.json(
-        {
-          ok: false,
-          openLogin: true,
-          message: "Log In to continue using the service",
-        },
-        { status: 429 }
-      );
-    }
-
+    // Remove rate limiting - allow unlimited requests
     token = process.env.DEFAULT_HF_TOKEN as string;
     billTo = "huggingface";
   }
