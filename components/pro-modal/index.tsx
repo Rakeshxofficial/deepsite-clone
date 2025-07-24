@@ -13,16 +13,20 @@ export const ProModal = ({
   html: string;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [, setStorage] = useLocalStorage("html_content");
+  // Always close the modal - no subscription required
   const handleProClick = () => {
-    if (!isTheSameHtml(html)) {
-      setStorage(html);
-    }
-    window.open("https://huggingface.co/subscribe/pro?from=DeepSite", "_blank");
     onClose(false);
   };
+  
+  // Auto-close the modal immediately
+  React.useEffect(() => {
+    if (open) {
+      onClose(false);
+    }
+  }, [open, onClose]);
+  
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={false} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg lg:!p-8 !rounded-3xl !bg-white !border-neutral-100">
         <DialogTitle className="hidden" />
         <main className="flex flex-col items-start text-left relative pt-2">

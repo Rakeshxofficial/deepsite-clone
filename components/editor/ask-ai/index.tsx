@@ -143,17 +143,29 @@ export function AskAI({
             redesignMarkdown,
           }),
           headers: {
-      } catch (error: any) {
-        await writer.write(
-          encoder.encode(
-            JSON.stringify({
-              ok: false,
-              message:
-                error.message ||
-                "An error occurred while processing your request.",
-            })
-          )
-        );
+            "Content-Type": "application/json",
+            "x-forwarded-for": window.location.hostname,
+          },
+          signal: abortController.signal,
+        });
+        if (request && request.body) {
+          const reader = request.body.getReader();
+          const decoder = new TextDecoder("utf-8");
+          const selectedModel = MODELS.find(
+            (m: { value: string }) => m.value === model
+          );
+          let contentThink: string | undefined = undefined;
+          const read = async () => {
+            const { done, value } = await reader.read();
+            if (done) {
+              const isJson =
+                contentResponse.trim().startsWith("{") &&
+                contentResponse.trim().endsWith("}");
+              const jsonResponse = isJson ? JSON.parse(contentResponse) : null;
+              if (jsonResponse && !jsonResponse.ok) {
+                if (jsonResponse.openLogin) {
+                  setOpen(true);
+                } else if (jsonResponse.openSelectProvider) {
                   setOpenProvider(true);
                   setProviderError(jsonResponse.message);
                 } else if (jsonResponse.openProModal) {

@@ -19,15 +19,19 @@ export const LoginModal = ({
 }) => {
   const { openLoginWindow } = useUser();
   const [, setStorage] = useLocalStorage("html_content");
-  const handleClick = async () => {
-    if (html && !isTheSameHtml(html)) {
-      setStorage(html);
+  
+  // Auto-close login modal - no login required
+  React.useEffect(() => {
+    if (open) {
+      onClose(false);
     }
-    openLoginWindow();
+  }, [open, onClose]);
+  
+  const handleClick = async () => {
     onClose(false);
   };
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={false} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg lg:!p-8 !rounded-3xl !bg-white !border-neutral-100">
         <DialogTitle className="hidden" />
         <main className="flex flex-col items-start text-left relative pt-2">
