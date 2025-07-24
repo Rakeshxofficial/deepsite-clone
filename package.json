@@ -46,7 +46,8 @@
     "redaxios": "^0.5.1",
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.0",
-    "zod": "^3.25.57"
+    "zod": "^3.25.57",
+    "next-sitemap": "^4.2.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
