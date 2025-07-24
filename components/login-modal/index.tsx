@@ -8,8 +8,8 @@ export const LoginModal = ({
   open,
   html,
   onClose,
-  title = "Log In to use DeepSite for free",
-  description = "Log In through your Hugging Face account to continue using DeepSite and increase your monthly free limit.",
+  title = "Log In to use HTMLweb.dev for free",
+  description = "Log In through your Hugging Face account to continue using HTMLweb.dev and increase your monthly free limit.",
 }: {
   open: boolean;
   html?: string;

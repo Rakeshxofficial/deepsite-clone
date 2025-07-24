@@ -75,17 +75,17 @@ export function Footer({
       </div>
       <div className="flex justify-end items-center gap-2.5">
         <a
-          href="https://huggingface.co/spaces/victor/deepsite-gallery"
+          href="#"
           target="_blank"
         >
           <Button size="sm" variant="ghost">
             <SparkleIcon className="size-3.5" />
-            <span className="max-lg:hidden">DeepSite Gallery</span>
+            <span className="max-lg:hidden">HTMLweb.dev Gallery</span>
           </Button>
         </a>
         <a
           target="_blank"
-          href="https://huggingface.co/spaces/enzostvs/deepsite/discussions/157"
+          href="#"
         >
           <Button size="sm" variant="outline">
             <HelpCircle className="size-3.5" />
@@ -120,6 +120,9 @@ export function Footer({
               <deviceItem.icon className="text-sm" />
             </button>
           ))}
+        </div>
+        <div className="text-xs text-neutral-500 flex items-center gap-1">
+          ⚡ Powered by <a href="https://deepseek.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-neutral-300 underline">DeepSeek</a>
         </div>
       </div>
     </footer>

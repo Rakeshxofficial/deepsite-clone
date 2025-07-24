@@ -320,7 +320,7 @@ export function AskAI({
                 {
                   "max-h-[0px]": !openThink,
                   "min-h-[250px] max-h-[250px] border-t border-neutral-700":
-                    openThink,
+              Select an element on the page to ask HTMLweb.dev edit it
                 }
               )}
             >
@@ -345,7 +345,7 @@ export function AskAI({
               <div className="flex items-center justify-start gap-2">
                 <Loading overlay={false} className="!size-4" />
                 <p className="text-neutral-400 text-sm">
-                  AI is {isThinking ? "thinking" : "coding"}...{" "}
+                  HTMLweb.dev is {isThinking ? "thinking" : "coding"}...{" "}
                 </p>
               </div>
               <div
@@ -368,10 +368,10 @@ export function AskAI({
             )}
             placeholder={
               selectedElement
-                ? `Ask DeepSite about ${selectedElement.tagName.toLowerCase()}...`
+                ? `Ask HTMLweb.dev about ${selectedElement.tagName.toLowerCase()}...`
                 : hasAsked
-                ? "Ask DeepSite for edits"
-                : "Ask DeepSite anything..."
+                ? "Ask HTMLweb.dev for edits"
+                : "Ask HTMLweb.dev anything..."
             }
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}

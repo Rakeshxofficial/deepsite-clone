@@ -23,34 +23,34 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "DeepSite | Build with AI ✨",
+  title: "HTMLweb.dev | Build with AI ✨",
   description:
-    "DeepSite is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with DeepSite and enjoy the magic of AI.",
+    "HTMLweb.dev is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with HTMLweb.dev and enjoy the magic of AI.",
   openGraph: {
-    title: "DeepSite | Build with AI ✨",
+    title: "HTMLweb.dev | Build with AI ✨",
     description:
-      "DeepSite is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with DeepSite and enjoy the magic of AI.",
-    url: "https://deepsite.hf.co",
-    siteName: "DeepSite",
+      "HTMLweb.dev is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with HTMLweb.dev and enjoy the magic of AI.",
+    url: "https://htmlweb.dev",
+    siteName: "HTMLweb.dev",
     images: [
       {
-        url: "https://deepsite.hf.co/banner.png",
+        url: "https://htmlweb.dev/banner.png",
         width: 1200,
         height: 630,
-        alt: "DeepSite Open Graph Image",
+        alt: "HTMLweb.dev Open Graph Image",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DeepSite | Build with AI ✨",
+    title: "HTMLweb.dev | Build with AI ✨",
     description:
-      "DeepSite is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with DeepSite and enjoy the magic of AI.",
-    images: ["https://deepsite.hf.co/banner.png"],
+      "HTMLweb.dev is a web development tool that helps you build websites with AI, no code required. Let's deploy your website with HTMLweb.dev and enjoy the magic of AI.",
+    images: ["https://htmlweb.dev/banner.png"],
   },
   appleWebApp: {
     capable: true,
-    title: "DeepSite",
+    title: "HTMLweb.dev",
     statusBarStyle: "black-translucent",
   },
   icons: {
@@ -92,7 +92,7 @@ export default async function RootLayout({
     <html lang="en">
       <Script
         defer
-        data-domain="deepsite.hf.co"
+        data-domain="htmlweb.dev"
         src="https://plausible.io/js/script.js"
       ></Script>
       <body
