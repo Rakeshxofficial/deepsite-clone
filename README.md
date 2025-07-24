@@ -56,6 +56,13 @@ Run `npm install` and then `npm run dev` to start the development server on loca
    OAUTH_CLIENT_SECRET=your_huggingface_client_secret
    DEFAULT_HF_TOKEN=your_default_huggingface_token
    HF_TOKEN=your_huggingface_token (optional, for local development)
+   
+   # AI Provider API Keys (at least one required)
+   OPENAI_API_KEY=sk-your-openai-api-key
+   DEEPSEEK_API_KEY=your-deepseek-api-key
+   ANTHROPIC_API_KEY=your-anthropic-api-key
+   GROQ_API_KEY=your-groq-api-key
+   TOGETHER_API_KEY=your-together-api-key
    ```
 
 6. **Deploy**: Click "Create Web Service" and wait for deployment

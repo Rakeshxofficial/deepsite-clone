@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { MODELS } from "@/lib/providers";
 import { HtmlHistory } from "@/types";
 import { InviteFriends } from "@/components/invite-friends";
-import { Settings } from "@/components/editor/ask-ai/settings";
+import { AISettings } from "@/components/editor/ask-ai/ai-settings";
 import { LoginModal } from "@/components/login-modal";
 import { ReImagine } from "@/components/editor/ask-ai/re-imagine";
 import Loading from "@/components/loading";
@@ -57,7 +57,7 @@ export function AskAI({
   const [hasAsked, setHasAsked] = useState(false);
   const [previousPrompt, setPreviousPrompt] = useState("");
   const [provider, setProvider] = useLocalStorage("provider", "auto");
-  const [model, setModel] = useLocalStorage("model", MODELS[0].value);
+  const [model, setModel] = useLocalStorage("model", "gpt-4o-mini");
   const [openProvider, setOpenProvider] = useState(false);
   const [providerError, setProviderError] = useState("");
   const [openProModal, setOpenProModal] = useState(false);
@@ -66,10 +66,6 @@ export function AskAI({
   const [isThinking, setIsThinking] = useState(true);
   const [controller, setController] = useState<AbortController | null>(null);
   const [isFollowUp, setIsFollowUp] = useState(true);
-
-  const selectedModel = useMemo(() => {
-    return MODELS.find((m: { value: string }) => m.value === model);
-  }, [model]);
 
   const callAi = async (redesignMarkdown?: string) => {
     if (isAiWorking) return;
@@ -93,7 +89,7 @@ export function AskAI({
         const selectedElementHtml = selectedElement
           ? selectedElement.outerHTML
           : "";
-        const request = await fetch("/api/ask-ai", {
+        const request = await fetch("/api/ai-chat", {
           method: "PUT",
           body: JSON.stringify({
             prompt,
@@ -112,13 +108,9 @@ export function AskAI({
         if (request && request.body) {
           const res = await request.json();
           if (!request.ok) {
-            if (res.openLogin) {
-              setOpen(true);
-            } else if (res.openSelectProvider) {
+            if (res.missingKey) {
               setOpenProvider(true);
               setProviderError(res.message);
-            } else if (res.openProModal) {
-              setOpenProModal(true);
             } else {
               toast.error(res.message);
             }
@@ -134,7 +126,7 @@ export function AskAI({
           if (audio.current) audio.current.play();
         }
       } else {
-        const request = await fetch("/api/ask-ai", {
+        const request = await fetch("/api/ai-chat", {
           method: "POST",
           body: JSON.stringify({
             prompt,
@@ -152,13 +144,9 @@ export function AskAI({
 
         if (!request.ok) {
           const jsonResponse = await request.json();
-          if (jsonResponse.openLogin) {
-            setOpen(true);
-          } else if (jsonResponse.openSelectProvider) {
+          if (jsonResponse.missingKey) {
             setOpenProvider(true);
             setProviderError(jsonResponse.message);
-          } else if (jsonResponse.openProModal) {
-            setOpenProModal(true);
           } else {
             toast.error(jsonResponse.message);
           }
@@ -175,9 +163,6 @@ export function AskAI({
             if (done) {
               setisAiWorking(false);
               setHasAsked(true);
-              if (selectedModel?.isThinker) {
-                setModel(MODELS[0].value);
-              }
               if (audio.current) audio.current.play();
 
               // Now we have the complete HTML including </html>, so set it to be sure
@@ -408,14 +393,13 @@ export function AskAI({
             <InviteFriends />
           </div>
           <div className="flex items-center justify-end gap-2">
-            <Settings
+            <AISettings
               provider={provider as string}
               model={model as string}
               onChange={setProvider}
               onModelChange={setModel}
               open={openProvider}
               error={providerError}
-              isFollowUp={!isSameHtml && isFollowUp}
               onClose={setOpenProvider}
             />
             <Button
@@ -433,27 +417,6 @@ export function AskAI({
           open={openProModal}
           onClose={() => setOpenProModal(false)}
         />
-        {!isSameHtml && (
-          <div className="absolute top-0 right-0 -translate-y-[calc(100%+8px)] select-none text-xs text-neutral-400 flex items-center justify-center gap-2 bg-neutral-800 border border-neutral-700 rounded-md p-1 pr-2.5">
-            <label
-              htmlFor="diff-patch-checkbox"
-              className="flex items-center gap-1.5 cursor-pointer"
-            >
-              <Checkbox
-                id="diff-patch-checkbox"
-                checked={isFollowUp}
-                onCheckedChange={(e) => {
-                  if (e === true && !isSameHtml && selectedModel?.isThinker) {
-                    setModel(MODELS[0].value);
-                  }
-                  setIsFollowUp(e === true);
-                }}
-              />
-              Diff-Patch Update
-            </label>
-            <FollowUpTooltip />
-          </div>
-        )}
       </div>
       <audio ref={audio} id="audio" className="hidden">
         <source src="/success.mp3" type="audio/mpeg" />
