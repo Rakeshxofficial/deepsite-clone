@@ -14,7 +14,7 @@ COPY --chown=1000 . .
 RUN npm install
 
 # Build the application
-RUN npm run build
+RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 # Copy static assets and public files to standalone build
 RUN cp -r public .next/standalone/
