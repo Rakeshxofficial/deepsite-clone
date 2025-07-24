@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { useUser } from "@/hooks/useUser";
 import { Project } from "@/types";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ProjectCard } from "./project-card";
 import { LoadProject } from "./load-project";
 
@@ -15,10 +15,15 @@ export function MyProjects({
   projects: Project[];
 }) {
   const { user } = useUser();
-  if (!user) {
-    redirect("/");
-  }
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>(initialProjects || []);
+
+  // Redirect to auth if no user (this should be handled by server-side auth check)
+  if (!user) {
+    router.push("/auth");
+    return null;
+  }
+
   return (
     <>
       <section className="max-w-[86rem] py-12 px-4 mx-auto">

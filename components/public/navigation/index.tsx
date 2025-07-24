@@ -40,6 +40,34 @@ export default function Navigation() {
   );
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // If user is not authenticated, show login prompt
+  if (!user) {
+    return (
+      <div className="sticky top-0 z-10 bg-black/50 backdrop-blur-md">
+        <nav className="grid grid-cols-2 p-4 container mx-auto">
+          <div className="flex items-center gap-1">
+            <Image
+              src={Logo}
+              className="w-9 mr-1"
+              alt="HTMLweb.dev Logo"
+              width={64}
+              height={64}
+            />
+            <p className="font-sans text-white text-xl font-bold">HTMLweb.dev</p>
+          </div>
+          <div className="flex items-center justify-end gap-2">
+            <Button variant="link" size={"sm"} onClick={openLoginWindow}>
+              Log In
+            </Button>
+            <Button size={"sm"} onClick={openLoginWindow}>
+              Sign Up
+            </Button>
+          </div>
+        </nav>
+      </div>
+    );
+  }
+
   useMount(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -139,16 +167,7 @@ export default function Navigation() {
           </div>
         </ul>
         <div className="flex items-center justify-end gap-2">
-          {user ? (
-            <UserMenu className="!pl-3 !pr-4 !py-2 !h-auto !rounded-lg" />
-          ) : (
-            <>
-              <Button variant="link" size={"sm"} onClick={openLoginWindow}>
-                Log In
-              </Button>
-              <Button size={"sm"}>Sign Up</Button>
-            </>
-          )}
+          <UserMenu className="!pl-3 !pr-4 !py-2 !h-auto !rounded-lg" />
         </div>
       </nav>
     </div>
