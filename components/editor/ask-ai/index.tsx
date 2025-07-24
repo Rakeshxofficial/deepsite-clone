@@ -83,6 +83,7 @@ export function AskAI({
     let contentResponse = "";
     let thinkResponse = "";
     let lastRenderTime = 0;
+    let contentThink = "";
 
     const abortController = new AbortController();
     setController(abortController);
@@ -148,38 +149,30 @@ export function AskAI({
           },
           signal: abortController.signal,
         });
-        if (request && request.body) {
+
+        if (!request.ok) {
+          const jsonResponse = await request.json();
+          if (jsonResponse.openLogin) {
+            setOpen(true);
+          } else if (jsonResponse.openSelectProvider) {
+            setOpenProvider(true);
+            setProviderError(jsonResponse.message);
+          } else if (jsonResponse.openProModal) {
+            setOpenProModal(true);
+          } else {
+            toast.error(jsonResponse.message);
+          }
+          setisAiWorking(false);
+          return;
+        }
+
+        if (request.body) {
           const reader = request.body.getReader();
-          const decoder = new TextDecoder("utf-8");
-          const selectedModel = MODELS.find(
-            (m: { value: string }) => m.value === model
-          );
-          let contentThink: string | undefined = undefined;
-          const read = async () => {
+          const decoder = new TextDecoder();
+
+          const read = async (): Promise<void> => {
             const { done, value } = await reader.read();
             if (done) {
-              const isJson =
-                contentResponse.trim().startsWith("{") &&
-                contentResponse.trim().endsWith("}");
-              const jsonResponse = isJson ? JSON.parse(contentResponse) : null;
-              if (jsonResponse && !jsonResponse.ok) {
-                if (jsonResponse.openLogin) {
-                  setOpen(true);
-                } else if (jsonResponse.openSelectProvider) {
-                  setOpenProvider(true);
-                  setProviderError(jsonResponse.message);
-                } else if (jsonResponse.openProModal) {
-                  setOpenProModal(true);
-                } else {
-                  toast.error(jsonResponse.message);
-                }
-                setisAiWorking(false);
-                return;
-              }
-
-              toast.success("AI responded successfully");
-              setPreviousPrompt(prompt);
-              setPrompt("");
               setisAiWorking(false);
               setHasAsked(true);
               if (selectedModel?.isThinker) {
