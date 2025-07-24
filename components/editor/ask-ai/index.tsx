@@ -320,7 +320,7 @@ export function AskAI({
                 {
                   "max-h-[0px]": !openThink,
                   "min-h-[250px] max-h-[250px] border-t border-neutral-700":
-              Select an element on the page to ask HTMLweb.dev edit it
+                    openThink,
                 }
               )}
             >
